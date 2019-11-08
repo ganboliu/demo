@@ -1,0 +1,38 @@
+sudo snap install microk8s --classic --channel=1.14/stable
+
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+sudo microk8s.kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+
+sudo /home/ganboliu_g/kfctl delete -f "https://raw.githubusercontent.com/kubeflow/manifests/v0.7-branch/kfdef/kfctl_existing_arrikto.0.7.0.yaml"
+
+Steps in 
+https://www.kubeflow.org/docs/gke/pipelines-tutorial/
+
+
+/home/ganboliu_g/examples/pipelines/mnist-pipelines/mnist_pipeline.py.tar.gz
+kubectl create secret generic user-gcp-sa --from-literal user=<user> --from-literal password=<password> -n kubeflow
+
+
+ganboliu-g-bucket
+
+ganboliu-g-bucket
+
+
+c7a039288df4d1896c3f9c2402ad6f26735fedc1
+
+
+export PROJECT_ID=ml-workflow-auto2
+export ZONE=us-central1-a
+gcloud config set project ${PROJECT_ID}
+gcloud config set compute/zone ${ZONE}
+
+
+kubectl --namespace kube-system create serviceaccount tiller
+
+kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+
+helm init --service-account tiller --upgrade
+
+/home/ganboliu_g/hydro-serving-kubeflow-demo/examples/mnist/pipeline.tar.gz
+
+kubectl config set-context $(kubectl config current-context) --namespace=kubeflow
