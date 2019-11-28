@@ -15,12 +15,6 @@ kubectl create secret generic user-gcp-sa --from-literal user=<user> --from-lite
 
 ganboliu-g-bucket
 
-ganboliu-g-bucket
-
-
-c7a039288df4d1896c3f9c2402ad6f26735fedc1
-
-
 export PROJECT_ID=ml-workflow-auto2
 export ZONE=us-central1-a
 gcloud config set project ${PROJECT_ID}
@@ -36,3 +30,151 @@ helm init --service-account tiller --upgrade
 /home/ganboliu_g/hydro-serving-kubeflow-demo/examples/mnist/pipeline.tar.gz
 
 kubectl config set-context $(kubectl config current-context) --namespace=kubeflow
+
+/home/ganboliu_g/hydro-serving-kubeflow-demo/examples/mnist/pipeline.tar.gz
+
+/home/ganboliu_g/hydro-serving-kubeflow-demo.tar.gz
+/home/ganboliu_g/ml-workflow-auto-fd/pipeline.tar.gz
+
+ls -al /var/lib/registry//docker/registry/v2/repositories/fd/_layers/sha256/
+ls -al /var/lib/registry//docker/registry/v2/repositories/fd/_manifests/tags/
+
+gcloud container images delete -q --force-delete-tags
+
+kubectl set env deployment serving-manager -e REMOTE_DOCKER_PULL_HOST=35.244.206.213
+kubectl set env deployment serving-manager -e REMOTE_DOCKER_REGISTRY_HOST=35.244.206.213
+
+kubectl set env deployment serving-manager -e REMOTE_DOCKER_PULL_HOST=localhost:5000
+
+	
+a0e7adb6a075111eab95542010a80010
+k8s-um-kubeflow-fanout-ingress--e1cf647211e8611c
+kubectl set env deployment serving-manager -e REMOTE_DOCKER_REGISTRY_HOST=docker-registry-serving.kubeflow.svc.cluster.local:5000
+kubectl set env deployment serving-manager -e KUBE_REGISTRY_SECRET_NAME=localhost-docker-credentials-serving
+
+kubectl set env deployment serving-manager -e REMOTE_DOCKER_PULL_HOST=gcr.io/ml-workflow-auto
+kubectl set env deployment serving-manager -e REMOTE_DOCKER_REGISTRY_HOST=gcr.io/ml-workflow-auto
+kubectl set env deployment serving-manager -e KUBE_REGISTRY_SECRET_NAME=gcr-secret
+
+kubectl set env deployment serving-manager -e KUBE_REGISTRY_SECRET_NAME=localhost-docker-credentials-serving
+
+kubectl --namespace kube-system create serviceaccount tiller
+
+kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+
+helm init --service-account tiller --upgrade
+
+/home/ganboliu_g/ml-workflow-auto-fd.tar.gz
+/home/ganboliu_g/hydro-serving-kubeflow-demo/examples/mnist/pipeline.tar.gz
+/home/ganboliu_g//ml-workflow-auto-fd/pipeline-standard.tar.gz
+/home/ganboliu_g//ml-workflow-auto-fd/pipeline-standard.py
+
+kubectl config set-context $(kubectl config current-context) --namespace=kubeflow
+
+
+gcloud container node-pools create [POOL_NAME] --cluster [CLUSTER_NAME] \
+    --enable-autoscaling --min-nodes 1 --max-nodes 5 [--zone [COMPUTE_ZONE]
+
+tail -n 3 | grep modelVersionId | jq "modelVersionId" > /model-version.txt
+
+kubectl get pods | grep Completed | awk '{print $1}' | xargs kubectl delete pod
+
+docker build -t gcr.io/ml-workflow-auto/mnist-pipeline-base:1.0.1 ./00_base
+docker push gcr.io/ml-workflow-auto/mnist-pipeline-base:1.0.1
+
+gcr.io/kubeflow-images-public/tensorflow-1.14.0-notebook-cpu:v-base-ef41372-1177829795472347138
+
+curl -sL https://gcr.io/v2/fd-pipeline-predeploy/tags/list
+
+kubectl get deploy | awk '{print $1}' | xargs kubectl scale deploy --replicas=0
+
+
+kubectl get pods | grep ImagePullBackOff | awk '{print $1}' | xargs kubectl delete pod
+
+docker image prune --all
+
+docker.demo.io
+
+k8s-um-kubeflow-fanout-ingress--dabe17c197932924
+a2702e5400b3b11eaa21b42010a80000
+
+docker-registry-serving.kubeflow.svc.cluster.local
+
+
+gcloud compute ssh gke-standard-cluster-1-default-pool-58ce2ed0-fmv1 --zone us-central1-a
+
+kubectl drain gke-standard-cluster-1-default-pool-a5e79d66-3fz1  --force --delete-local-data --ignore-daemonsets
+
+
+kubectl create secret generic localsecret --from-file=.dockerconfigjson=/home/ganboliu_g/.docker/docker_cred.json --type=kubernetes.io/dockerconfigjson
+
+mkdir certs
+openssl req   -newkey rsa:4096 -nodes -sha256   -keyout certs/domain.key   -x509 -days 356   -out certs/domain.crt
+sudo mkdir -p /etc/docker/certs.d/docker-registry-serving.kubeflow.svc.cluster.local:5000
+sudo cp certs/domain.crt /etc/docker/certs.d/docker-registry-serving.kubeflow.svc.cluster.local:5000/
+sudo cp certs/domain.key /etc/docker/certs.d/docker-registry-serving.kubeflow.svc.cluster.local:5000/
+ls /etc/docker/certs.d/docker-registry-serving.kubeflow.svc.cluster.local:5000
+
+gcloud compute scp gke-standard-cluster-1-default-pool-1738a497-zqwp:/home/ganboliu_g/certs.tar.gz ./ --zone us-central1-a
+
+docker build -t gcr.io/ml-workflow-auto/registry:2.6.2 ./00_registry/
+docker push gcr.io/ml-workflow-auto/registry:2.6.2
+
+kubectl scale deploy docker-registry-serving --replicas=0
+
+- name: REGISTRY_HTTP_TLS_CERTIFICATE
+  value: /certs/domain.crt
+- name: REGISTRY_HTTP_TLS_KEY
+  value: /certs/domain.key
+  
+  _g@gke-standard-cluster-1-default-pool-1738a497-zqwp ~ $ docker login https://10.12.6.99.xip.io:5000
+  
+readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+
+
+Nov 18 03:40:10 gke-standard-cluster-1-default-pool-1738a497-zqwp dockerd[340223]: unable to configure the Docker daemon with file /etc/docker/daemon.json: the following directives are specifi
+
+
+{
+        "live-restore": true,
+        "storage-driver": "overlay2",
+        "insecure-registries": [ "docker-registry-serving.kubeflow.svc.cluster.local:5000" ]
+}
+
+
+{
+        "auths": {
+                "docker-registry-serving.kubeflow.svc.cluster.local:5000": {
+                        "auth": "dXNlcjpwYXNz"
+                }
+        },
+        "HttpHeaders": {
+                "User-Agent": "Docker-Client/18.09.7 (linux)"
+        }
+}
+
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py --force-reinstall
+sudo apt-get update && sudo apt-get install s3cmd
+
+docker: failed to register layer: Error processing tar file(exit status 1): write /usr/local/lib/R/site-                                                                                     library/FitARMA/doc/wsDurbin.R: no space left on device.
+See 'docker run --help'.
+
+docker run --rm -it -e MOUNT_PATH='/storage/' -e LEARNING_RATE='0.02' -e LEARNING_STEPS='10' -e BATCH_SIZE='256' gcr.io/ml-workflow-auto/fd-pipeline-train-r /bin/bash
+
+Normal samples: 
+[-0.684648767847422, 0.730993074509637, 1.12217132628431, -1.46622008116575, 0.271470477188696, -0.56672341461062, 0.815877570633501, -0.3098577194475, 0.446642126764449, -0.0578149270621074, -0.9334189253054309, 0.0907156329165363, 0.9946752032885021, -0.6216397367829829, 0.55267624949087, 0.7570397758745692, -1.17272451094237, -0.25724953009672197, -0.469290715250181, 0.23655331970041898, -0.23386303499043104, -0.34536354156724103, -0.17177450255540602, -0.38929121818448603, -0.0986441361474885, 0.7372614507658629, 0.0137503201506011, -0.0920758899380615, -0.1391786776888259]
+[0.9029706981306771, -0.30318794078129196, 1.3131564136716, 2.81181987097025, -0.655398358698, 1.05635627184653, -0.583963935020275, 0.257246125814817, 0.51537271360247, 0.270123828620391, -1.9430778658202499, 0.5191328476653461, 0.868984886539256, -0.9991889472335841, -1.35204014701738, 0.44867338282317104, -0.412371972737459, -0.131579967186135, -0.29220601175899297, 0.15827993690535097, -0.0809210652642186, -0.15234936271251698, -0.227498894272868, -0.41457387957630604, 0.472268192941122, 0.0704981124718126, 0.0426461644550124, 0.0512034574404584, 0.3592088605929979]
+[-1.0972779818864, 1.0943480767604399, 2.0743344907134302, -0.0857760525770999, -0.200635483400869, -0.424142015398634, 0.5753082775339771, 0.10694538989434499, -0.27810450313786605, -0.18897987116780102, 0.142235419637789, 0.179205210998806, 0.20047505656591397, -0.032477631587508, 1.24097840502846, -0.14901642677375102, -0.0296136606761438, -0.6887823640098829, -0.537782747926107, 0.253305717020837, -0.0806922393988633, -0.0556300240282289, -0.132470995390762, 0.4103479878070371, 0.18119808976460003, 0.295575571087765, 0.39545350915393107, 0.197641504137651, -0.1998576474697653]
+Frauds samples: 
+[-2.16992897559082, 3.6396539992044, -4.508497786177281, 2.73066814884895, -2.12269287053048, -2.34101682766366, -4.23525308290613, 1.7035376576350802, -1.30527913344307, -6.716720022712701, 6.35361231915591, -8.60164826276464, 0.449930038237225, -7.506169374081451, -0.43808178181246704, -3.69451599830956, -6.30475338603049, -1.26758712788115, 0.357987030484253, 0.5007790539507, 0.6451032756213779, -0.503529448911197, -0.0005228218182992269, 0.0716957787676742, 0.0920074334247208, 0.30849793157703603, 0.552590914653841, 0.298954478709399, -0.3438472027877782]
+[1.02387386852139, 2.0014852662661298, -4.7697518322097405, 3.81919458538265, -1.2717542273697, -1.7346624268403, -3.05924503160896, 0.889804791975203, 0.415382113237262, -3.95581234352737, 3.57205481558784, -7.186451590505881, 0.14724234080210902, -5.24930454889762, 1.6783336735853502, -2.6414731091517796, -1.31205856007348, -0.391716050952505, 1.11826355175812, 0.20413768404227103, 0.34328264872225106, -0.0541956644068491, 0.709653952497143, -0.37221586694697606, -2.03206836614816, 0.36677760207119203, 0.395170669257609, 0.0202055389458413, -0.3438472027877782]
+[-4.64189285087538, 2.90208643306647, -1.5729387093174199, 2.507298518227, -0.871782564349351, -1.0409025722626, -1.59390073966645, -3.2549050858157904, 1.9089626859370699, 1.07741752106048, 3.33850216040272, -6.54261034532574, 1.09953638182128, -3.26647554459315, 1.0147279044429398, -4.84238307827835, -5.269876299726, -2.34466857415508, 1.95922405409272, -0.46567922034412196, 1.9635966663414601, -0.21741391597324497, -0.54933995583883, 0.645545202036521, -0.354557818794591, -0.6117638450064791, -3.9080804754779903, -0.6712482651471171, -0.28704950044327726]
