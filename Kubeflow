@@ -165,6 +165,10 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --force-reinstall
 sudo apt-get update && sudo apt-get install s3cmd
 
+sudo vi /home/ganboliu_g/.s3cfg
+s3cmd put ../creditcard.csv s3://mybucket/
+s3cmd put ../creditcard_validate.csv s3://mybucket/
+
 docker: failed to register layer: Error processing tar file(exit status 1): write /usr/local/lib/R/site-                                                                                     library/FitARMA/doc/wsDurbin.R: no space left on device.
 See 'docker run --help'.
 
